@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import "./App.css";
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   // handle input changes
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setFormData({
@@ -22,13 +22,13 @@ function App() {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setMessage(""); // reset previous messages
 
     try {
-      const response = await fetch("http://localhost:8080/users", {
+      const response = await fetch("https://skillswap-api-0ylv.onrender.com/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -48,6 +48,7 @@ function App() {
       setMessage(res.message || "Signup successful!");
       setMessageType("success");
     } catch (error) {
+      console.warn(error)
       setMessage("Something went wrong. Try again later.");
       setMessageType("error");
     } finally {
